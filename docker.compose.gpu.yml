@@ -1,0 +1,24 @@
+# NVIDIA Linux 主機專用；需先配置 NVIDIA Container Toolkit。
+services:
+  seg:
+    build:
+      args:
+        TORCH_INDEX_URL: https://download.pytorch.org/whl/cu132
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+  pose:
+    build:
+      args:
+        TORCH_INDEX_URL: https://download.pytorch.org/whl/cu132
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

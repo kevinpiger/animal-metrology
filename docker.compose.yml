@@ -1,0 +1,80 @@
+name: animal-metrology
+x-model: &model
+  build:
+    context: .
+    dockerfile: docker/model.Dockerfile
+  networks: [metrology]
+  restart: unless-stopped
+  healthcheck:
+    test: [CMD, python, -c, "import os,urllib.request,json; assert json.load(urllib.request.urlopen('http://127.0.0.1:'+os.environ['SERVICE_PORT']+'/health'))['ready']"]
+    interval: 15s
+    timeout: 10s
+    retries: 8
+    start_period: 90s
+services:
+  seg:
+    <<: *model
+    environment:
+      SERVICE_PORT: ${SEG_PORT:-8000}
+      MODEL_PATH: /models/animal_seg.pt
+      MODEL_DEVICE: ${MODEL_DEVICE:-cpu}
+    volumes:
+      - type: bind
+        source: ${SEG_MODEL_PATH:-./models/animal_seg.pt}
+        target: /models/animal_seg.pt
+        read_only: true
+        bind: {create_host_path: false}
+  pose:
+    <<: *model
+    environment:
+      SERVICE_PORT: ${POSE_PORT:-8000}
+      MODEL_PATH: /models/animal_pose.pt
+      MODEL_DEVICE: ${MODEL_DEVICE:-cpu}
+    volumes:
+      - type: bind
+        source: ${POSE_MODEL_PATH:-./models/animal_pose.pt}
+        target: /models/animal_pose.pt
+        read_only: true
+        bind: {create_host_path: false}
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    environment:
+      API_PORT: ${API_PORT:-8000}
+      MODEL_DEVICE: ${MODEL_DEVICE:-cpu}
+      SEG_SERVICE_URL: http://seg:${SEG_PORT:-8000}
+      POSE_SERVICE_URL: http://pose:${POSE_PORT:-8000}
+      TEMP_DIR: /tmp/metrology
+      RESULT_TTL_SECONDS: ${RESULT_TTL_SECONDS:-1800}
+      DETECTION_CONF: ${DETECTION_CONF:-0.25}
+      EYE_CONF: ${EYE_CONF:-0.5}
+      MATCH_IOU: ${MATCH_IOU:-0.3}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-10}
+    tmpfs:
+      - /tmp/metrology:size=536870912,mode=1777
+    depends_on:
+      seg: {condition: service_healthy}
+      pose: {condition: service_healthy}
+    networks: [metrology]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, python, -c, "import os,urllib.request,json; assert json.load(urllib.request.urlopen('http://127.0.0.1:'+os.environ['API_PORT']+'/api/health'))['ready']"]
+      interval: 20s
+      timeout: 15s
+      retries: 5
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    environment:
+      API_PORT: ${API_PORT:-8000}
+    ports:
+      - '${WEB_BIND_HOST:-127.0.0.1}:${WEB_PORT:-8080}:80'
+    depends_on:
+      api: {condition: service_healthy}
+    networks: [metrology]
+    restart: unless-stopped
+networks:
+  metrology:
+    driver: bridge

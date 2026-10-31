@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>動物影像量測｜本地驗證工作台</title>
+<link rel="stylesheet" href="/static/style.css?v=upload-preview-4"><script src="/static/app.js?v=upload-preview-4" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12V5h7M20 5h7v7M27 20v7h-7M12 27H5v-7M10 16h12M16 10v12"/></svg><span>動物影像量測<small>影像量測系統</small></span></a><div class="toplinks"><span class="status-dot" id="deviceStatus">檢查環境中</span><button id="openSettings" class="settings-trigger" type="button" aria-label="分析設定" title="分析設定" aria-haspopup="dialog" aria-controls="settingsDialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 3-.7 2.5-2 .9L4.4 6l-2 3.5 1.8 1.8v1.4l-1.8 1.8 2 3.5 2.4-.4 2 .9.7 2.5h5l.7-2.5 2-.9 2.4.4 2-3.5-1.8-1.8v-1.4l1.8-1.8-2-3.5-2.4.4-2-.9L14.5 3Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></header>
+<main>
+<div class="workbench">
+<section class="controls" aria-label="選擇圖片與開始分析">
+<section class="input-selection"><h2>選擇要分析的圖片</h2>
+<div id="dropZone" class="upload-area"><label for="upload" class="upload-box" id="uploadPrompt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5h16v-5"/></svg><strong>上傳圖片</strong><span>點擊選取，或將圖片拖曳到這裡</span><small>JPG／PNG／WebP · 最大 10 MB</small><input id="upload" type="file" accept="image/jpeg,image/png,image/webp"></label><div id="uploadPreview" class="upload-preview" hidden><img id="uploadedImage" alt="上傳圖片預覽"><button id="removeUpload" class="remove-upload" type="button" aria-label="移除上傳圖片" title="移除圖片">×</button><span id="uploadedName" class="uploaded-name"></span></div></div>
+<div class="sample-heading"><p class="field-label">或使用範例圖片</p><span>斑馬、羊群、馬匹</span></div><div id="samples" class="samples" aria-label="COCO 範例"></div>
+</section>
+<div class="analysis-actions"><p id="jobStatus" role="status" aria-live="polite">正在載入範例與模型狀態…</p><button id="run" class="primary" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6Z"/></svg><span>開始分析</span></button></div>
+</section>
+<section class="image-section" aria-label="影像檢視">
+<div class="image-toolbar"><div class="tab-group" role="group" aria-label="顯示模式"><button id="originalTab" class="tab active" aria-pressed="true">原始影像</button><button id="overlayTab" class="tab" aria-pressed="false" disabled>模型標示</button></div><span id="imageMeta">—</span></div>
+<div class="image-stage" id="stage"><div class="image-wrap" id="imageWrap"><img id="preview" alt="尚未選擇影像"><svg id="annotations" aria-label="眼點與人工量測標示"></svg></div><div class="working" id="working" hidden><span class="spinner"></span><strong>正在分析影像</strong><span>依序執行分割、眼點與配對檢查</span></div></div>
+<div class="viewer-tools"><label><input id="candidates" type="checkbox" disabled> 顯示眼點候選</label><button id="ruler" class="tool" aria-pressed="false" disabled>兩點像素尺</button><button id="clearRuler" class="text-button" disabled>清除</button><output id="rulerValue">在圖片點兩下，人工核對距離</output></div>
+<div class="legend"><span><i class="key valid"></i>通過檢查的眼點</span><span><i class="key rejected"></i>被拒絕的候選點</span><span><i class="key manual"></i>人工像素尺</span></div>
+<div class="image-caption"><span id="sourceLabel">選擇一張圖片開始</span><span>左右眼依動物解剖方向定義</span></div>
+</section>
+<aside class="results-panel"><div class="panel-title"><h2>實例檢查</h2><span id="animalCount" class="count">尚未分析</span></div><div id="animals"><div class="empty"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18V8h10m12 0h10v10M40 30v10H30m-12 0H8V30M16 24h16"/></svg><h3>等待第一筆結果</h3><p>分析後，這裡會列出每隻動物、左右眼狀態與雙眼距離。</p></div></div></aside>
+</div>
+<section class="bottom-section"><div><div class="section-heading"><h2>跨動物右眼距離</h2><span>所有動物兩兩配對</span></div><div id="pairs" class="pairs"><p class="muted">分析完成後顯示。任一右眼未通過檢查，該組距離會保留為不可量測。</p></div></div><aside class="export-panel"><h2>下載分析結果</h2><p>下載當次參數、眼點檢查與量測結果。</p><div class="downloads"><a id="downloadJson" class="download disabled" aria-disabled="true">JSON 結果</a><a id="downloadCsv" class="download disabled" aria-disabled="true">CSV 量測</a><a id="downloadImage" class="download disabled" aria-disabled="true">標示圖片</a></div></aside></section>
+<details class="method"><summary>這個畫面如何幫助驗證？</summary><div><p>先切換原圖與模型標示，檢查輪廓是否對應同一隻動物。再開啟「眼點候選」，核對被拒絕的原因。通過檢查只代表符合幾何與信心規則，仍需人工判斷是否為真正眼睛。</p><p>像素尺使用原圖座標計算 d = √((x₁−x₂)² + (y₁−y₂)²)。它與 AI 結果獨立，不會覆寫量測，也不自動成為真值。缺眼、遮擋或低信心時保留不可量測，不推測補點。調整門檻後需重新分析。</p></div></details>
+</main>
+<footer><span>Animal Metrology</span><span>動物影像量測系統</span></footer>
+<dialog id="settingsDialog" aria-labelledby="settingsTitle">
+<div class="dialog-heading"><h2 id="settingsTitle">分析設定</h2><button id="closeSettings" type="button" class="dialog-close" aria-label="關閉設定">✕</button></div>
+<section class="settings"><p class="dialog-description">調整眼點與動物配對的檢查門檻，重新分析後套用。</p>
+<label for="eyeConf">眼點信心 <output id="eyeValue">0.50</output></label><input id="eyeConf" type="range" min="0.1" max="0.95" step="0.05" value="0.5"><p class="hint">低信心眼點不參與量測。</p>
+<label for="detectConf">偵測信心 <output id="detectValue">0.25</output></label><input id="detectConf" type="range" min="0.1" max="0.9" step="0.05" value="0.25">
+<label for="matchIou">框配對 IoU <output id="matchValue">0.30</output></label><input id="matchIou" type="range" min="0.1" max="0.9" step="0.05" value="0.3">
+<label for="device">運算裝置</label><select id="device"><option value="cpu" selected>CPU</option></select>
+</section><button id="doneSettings" type="button" class="settings-done">完成設定</button>
+</dialog>
+</body></html>

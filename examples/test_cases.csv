@@ -1,0 +1,4 @@
+case_id,coco_image_id,image_path,source_url,annotated_animal_count,expected_behavior
+zebra_occlusion,1818,examples/images/000000001818.jpg,http://images.cocodataset.org/val2017/000000001818.jpg,2,Report rejected or missing eyes without inventing distance
+sheep_group,5992,examples/images/000000005992.jpg,http://images.cocodataset.org/val2017/000000005992.jpg,5,Inspect multiple instances and pairwise right-eye availability
+horse_pair,7281,examples/images/000000007281.jpg,http://images.cocodataset.org/val2017/000000007281.jpg,2,Inspect segmentation and eye association on two horses

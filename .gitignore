@@ -1,0 +1,11 @@
+.env
+.DS_Store
+__pycache__/
+.venv/
+static/metrics.html
+.env.*
+!.env.example
+outputs/
+*.log
+*.py[cod]
+.pytest_cache/

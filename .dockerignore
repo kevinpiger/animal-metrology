@@ -1,0 +1,8 @@
+models/
+.env
+.venv/
+.git/
+outputs/
+**/__pycache__/
+**/.DS_Store
+static/metrics.html

@@ -1,0 +1,35 @@
+{
+  "weights": [
+    {
+      "file": "animal_pose.pt",
+      "sha256": "6a434cf23777904a8f1f7aeaa8945b2e0f95f2d9d7ef5306ad142d72e3f90bc1",
+      "bytes": 22855736,
+      "checkpoint_type": "epoch",
+      "source": "pose_weight/epoch80.pt",
+      "checkpoint_epoch_index": 80,
+      "completed_epochs": 81,
+      "keypoint_shape": [
+        17,
+        3
+      ],
+      "classes": 54
+    },
+    {
+      "file": "animal_seg.pt",
+      "sha256": "787f6c512bfca2a01499af10228279bc49c813d8162c934d20404422f9c7a95f",
+      "bytes": 31703321,
+      "checkpoint_type": "last",
+      "source": "runs/animal_seg_full/weights/last.pt",
+      "checkpoint_epoch_index": 28,
+      "completed_epochs": 29
+    }
+  ],
+  "eye_point_source": {
+    "model": "animal_pose.pt",
+    "keypoints": {
+      "left": 0,
+      "right": 1
+    },
+    "old_eye_model_active": false
+  }
+}
