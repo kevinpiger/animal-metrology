@@ -1,4 +1,11 @@
-case_id,coco_image_id,image_path,source_url,annotated_animal_count,expected_behavior
-zebra_occlusion,1818,examples/images/000000001818.jpg,http://images.cocodataset.org/val2017/000000001818.jpg,2,Report rejected or missing eyes without inventing distance
-sheep_group,5992,examples/images/000000005992.jpg,http://images.cocodataset.org/val2017/000000005992.jpg,5,Inspect multiple instances and pairwise right-eye availability
-horse_pair,7281,examples/images/000000007281.jpg,http://images.cocodataset.org/val2017/000000007281.jpg,2,Inspect segmentation and eye association on two horses
+﻿case_id,coco_image_id,image_path,source_url,annotated_animal_count,expected_behavior,animal_species,image_width,image_height
+zebra_occlusion,1818,examples/images/000000001818.jpg,https://images.cocodataset.org/val2017/000000001818.jpg,2,Report rejected or missing eyes without inventing distance,zebra:2,640,425
+sheep_group,5992,examples/images/000000005992.jpg,https://images.cocodataset.org/val2017/000000005992.jpg,5,Inspect multiple instances and pairwise right-eye availability,sheep:5,640,428
+horse_pair,7281,examples/images/000000007281.jpg,https://images.cocodataset.org/val2017/000000007281.jpg,2,Inspect segmentation and eye association on two horses,horse:2,640,361
+cat_pair,39769,examples/images/000000039769.jpg,https://images.cocodataset.org/val2017/000000039769.jpg,2,Inspect two cats and reject invisible or low-confidence eyes,cat:2,640,480
+dog_group,81766,examples/images/000000081766.jpg,https://images.cocodataset.org/val2017/000000081766.jpg,3,Inspect three dogs and species-aware instance association,dog:3,640,480
+cow_group,41635,examples/images/000000041635.jpg,https://images.cocodataset.org/val2017/000000041635.jpg,4,Inspect cows of different sizes and record unmatched instances,cow:4,640,480
+elephant_pair,24919,examples/images/000000024919.jpg,https://images.cocodataset.org/val2017/000000024919.jpg,2,Inspect elephant segmentation and visible eye keypoints,elephant:2,640,425
+bear_pair,20247,examples/images/000000020247.jpg,https://images.cocodataset.org/val2017/000000020247.jpg,2,Inspect bear alias matching between Seg and Pose classes,bear:2,640,457
+giraffe_pair,22969,examples/images/000000022969.jpg,https://images.cocodataset.org/val2017/000000022969.jpg,2,Inspect giraffe eye visibility and pairwise right-eye availability,giraffe:2,500,375
+sheep_group_alternative,12062,examples/images/000000012062.jpg,https://images.cocodataset.org/val2017/000000012062.jpg,3,Inspect another sheep group with a different composition,sheep:3,640,427
