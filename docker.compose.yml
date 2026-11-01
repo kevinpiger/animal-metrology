@@ -28,12 +28,12 @@ services:
     <<: *model
     environment:
       SERVICE_PORT: ${POSE_PORT:-8000}
-      MODEL_PATH: /models/animal_pose.pt
+      MODEL_PATH: /models/animal_pose_v2.pt
       MODEL_DEVICE: ${MODEL_DEVICE:-cpu}
     volumes:
       - type: bind
-        source: ${POSE_MODEL_PATH:-./models/animal_pose.pt}
-        target: /models/animal_pose.pt
+        source: ${POSE_MODEL_PATH:-./models/animal_pose_v2.pt}
+        target: /models/animal_pose_v2.pt
         read_only: true
         bind: {create_host_path: false}
   api:

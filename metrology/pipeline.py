@@ -45,7 +45,7 @@ def run(image, out, *, device='auto', conf=.25, eye_conf=.5, match_iou=.3):
     root = Path(__file__).resolve().parents[1]
     a = SimpleNamespace(image=str(image), out=str(out), device=device, strict_device=False,
                         conf=conf, eye_conf=eye_conf, match_iou=match_iou,
-                        pose=str(root/'models/animal_pose.pt'),
+                        pose=str(root/'models/animal_pose_v2.pt'),
                         seg=str(root/'models/animal_seg.pt'))
     if a.match_iou == 0:
         raise ValueError('match_iou must be greater than zero')

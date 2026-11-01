@@ -90,9 +90,9 @@ def create_app(output_dir=None):
                     services[name] = {'ready': False}
             return {'ready': all(v.get('ready',False) for v in services.values()), 'services': services,
                     'runtime': {'device': services['seg'].get('runtime',{}).get('device','unavailable')},
-                    'models': {'animal_seg.pt':services['seg'].get('ready',False),'animal_pose.pt':services['pose'].get('ready',False)},
+                    'models': {'animal_seg.pt':services['seg'].get('ready',False),'animal_pose_v2.pt':services['pose'].get('ready',False)},
                     'scope':'temporary_only','max_upload_mb':10}
-        models = {name:(ROOT/'models'/name).is_file() for name in ('animal_seg.pt','animal_pose.pt')}
+        models = {name:(ROOT/'models'/name).is_file() for name in ('animal_seg.pt','animal_pose_v2.pt')}
         if not runtime_cache:
             try:
                 runtime_cache.update(select_device())

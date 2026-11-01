@@ -17,7 +17,7 @@ def main():
         try:
             for role,port in [('seg',18761),('pose',18762)]:
                 log=open(Path(tmp)/(role+'.log'),'w+');logs.append(log)
-                env=dict(os.environ,MODEL_PATH=str(ROOT/'models'/f'animal_{role}.pt'),MODEL_DEVICE='cpu',YOLO_AUTOINSTALL='false',PYTHONPATH=str(ROOT))
+                env=dict(os.environ,MODEL_PATH=str(ROOT/'models'/('animal_pose_v2.pt' if role=='pose' else 'animal_seg.pt')),MODEL_DEVICE='cpu',YOLO_AUTOINSTALL='false',PYTHONPATH=str(ROOT))
                 processes.append(subprocess.Popen([sys.executable,'-m','uvicorn','metrology.model_service:app','--host','127.0.0.1','--port',str(port)],cwd=ROOT,env=env,stdout=log,stderr=log))
             deadline=time.monotonic()+90
             for port in [18761,18762]:

@@ -10,6 +10,10 @@
 - Web 僅公開 127.0.0.1:8080；API 與模型服務透過 Docker 網路連線。
 - 舊的 8765 原生 Python 服務已停止。
 
+## 目前 Pose 權重
+
+已切換至 animal_pose_v2.pt（epoch120.pt 快照）並重新建立 Pose 容器；54 類、17 點與眼點索引 0／1 維持一致。容器內 SHA-256 與來源相符，CPU 分析與下載再次通過，見 [新版模型驗證](POSE_EPOCH120_VERIFICATION.json)。
+
 ## 已通過
 
 - 30 項單元與服務整合測試，包含 CPU 強制模式、HTTP 模型回應、遠端 Mask 還原、眼距計算、空偵測與 TTL 清理。

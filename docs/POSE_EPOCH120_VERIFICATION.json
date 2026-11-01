@@ -1,0 +1,33 @@
+{
+  "verified_on": "2026-11-01",
+  "model": "models/animal_pose_v2.pt",
+  "source": "epoch120.pt",
+  "sha256": "4ae7eee8ec16aa0b2bab08dad6b163a6894f887fee69d4524e06a75e30304bcc",
+  "checkpoint_epoch_index": 120,
+  "completed_epochs": 121,
+  "classes": 54,
+  "keypoint_shape": [
+    17,
+    3
+  ],
+  "eye_indices": {
+    "left": 0,
+    "right": 1
+  },
+  "deployment": "Docker four services",
+  "device": "cpu",
+  "smoke_test": {
+    "sample_id": "5992",
+    "segmentation_instances": 5,
+    "pose_matches": 2,
+    "downloads_verified": [
+      "source.jpg",
+      "overlay.jpg",
+      "result.json",
+      "measurements.csv",
+      "animal_0_mask.png"
+    ],
+    "swagger": true
+  },
+  "assessment": "Pipeline smoke test; not an accuracy evaluation"
+}

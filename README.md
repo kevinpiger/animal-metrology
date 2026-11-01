@@ -56,6 +56,24 @@ Seg／Pose 共用 model.Dockerfile，但各自啟動獨立容器與載入不同�
 
 ### 基本部署（CPU／Mac Docker）
 
+從 GitHub 全新下載可直接依序執行（主機需先安裝並啟動 Docker 與 Compose v2）：
+
+```bash
+git clone https://github.com/kevinpiger/animal-metrology.git
+cd animal-metrology
+cp .env.example .env
+# 編輯 .env 的 WEB_PORT，例如 WEB_PORT=8080
+docker compose -f docker.compose.yml up -d --build
+```
+
+完整 clone 已包含啟動所需模型，不需要另外下載、安裝主機 Python 或訓練模型。啟動時會自動建置映像、安裝容器套件、載入權重並依健康檢查啟動四個服務。第一次需要網路下載映像與套件；修改 Port 後仍須執行上面的 Compose 指令，不會因為存檔而自動啟動。通常只需修改對外的 WEB_PORT，內部服務 Port 可保留預設。
+
+舊 `models/animal_pose.pt` 保留作版本備存，啟動預設使用新版。
+
+目前 `models/animal_pose_v2.pt` 使用 epoch120.pt 的權重快照，來源與 SHA-256 見 `models/manifest.json`；左右眼仍取 17 點中的索引 0／1。
+
+已有舊 `.env` 的部署，更新時也要將 `POSE_MODEL_PATH` 改成 `./models/animal_pose_v2.pt`，再執行 Compose 重新建立服務；`git pull` 不會覆寫你的 `.env`。
+
 先安裝並啟動 Docker Engine 與 Compose v2，在 project/ 執行：
 
 ```bash
@@ -105,7 +123,7 @@ python -m pip install -r requirements.txt
 | 模型 | 專案相對路徑 | 環境變數 |
 |---|---|---|
 | 動物分割 | ./models/animal_seg.pt | SEG_MODEL_PATH |
-| 動物姿態／眼點 | ./models/animal_pose.pt | POSE_MODEL_PATH |
+| 動物姿態／眼點 | ./models/animal_pose_v2.pt | POSE_MODEL_PATH |
 | 權重雜湊資訊 | ./models/manifest.json | — |
 
 設定檔位於 project/.env；模型路徑相對於 project/，Compose 將對應權重唯讀掛載至模型容器：
@@ -118,7 +136,7 @@ SEG_PORT=8000
 POSE_PORT=8000
 MODEL_DEVICE=cpu
 SEG_MODEL_PATH=./models/animal_seg.pt
-POSE_MODEL_PATH=./models/animal_pose.pt
+POSE_MODEL_PATH=./models/animal_pose_v2.pt
 RESULT_TTL_SECONDS=1800
 ```
 

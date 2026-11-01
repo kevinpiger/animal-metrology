@@ -28,7 +28,7 @@ class PoseEyesTests(unittest.TestCase):
         def load(path):
             name=Path(path).name
             if name=='animal_seg.pt': prediction=seg
-            elif name=='animal_pose.pt': prediction=pose
+            elif name=='animal_pose_v2.pt': prediction=pose
             else: raise AssertionError('Old Eye model must not be loaded')
             return SimpleNamespace(predict=lambda *args,**kwargs:[prediction])
         with patch('metrology.pipeline.load_model',side_effect=load):

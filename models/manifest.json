@@ -1,13 +1,13 @@
 {
   "weights": [
     {
-      "file": "animal_pose.pt",
-      "sha256": "6a434cf23777904a8f1f7aeaa8945b2e0f95f2d9d7ef5306ad142d72e3f90bc1",
-      "bytes": 22855736,
+      "file": "animal_pose_v2.pt",
+      "sha256": "4ae7eee8ec16aa0b2bab08dad6b163a6894f887fee69d4524e06a75e30304bcc",
+      "bytes": 22865976,
       "checkpoint_type": "epoch",
-      "source": "pose_weight/epoch80.pt",
-      "checkpoint_epoch_index": 80,
-      "completed_epochs": 81,
+      "source": "epoch120.pt",
+      "checkpoint_epoch_index": 120,
+      "completed_epochs": 121,
       "keypoint_shape": [
         17,
         3
@@ -25,7 +25,7 @@
     }
   ],
   "eye_point_source": {
-    "model": "animal_pose.pt",
+    "model": "animal_pose_v2.pt",
     "keypoints": {
       "left": 0,
       "right": 1
